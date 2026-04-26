@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent World — PixiJS 測試頁面</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #1A1A2E;
+            font-family: 'Courier New', monospace;
+            overflow: hidden;
+            color: #C0C0C0;
+        }
+        #canvas-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #ui-overlay {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(26, 26, 46, 0.9);
+            border: 2px solid #4A90E2;
+            border-radius: 8px;
+            padding: 16px;
+            max-width: 300px;
+        }
+        #ui-overlay h1 {
+            font-size: 18px;
+            color: #4A90E2;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 12px;
+        }
+        .status-label {
+            color: #888;
+        }
+        .status-value {
+            color: #C0C0C0;
+            font-weight: bold;
+        }
+        .agent-card {
+            background: rgba(74, 144, 226, 0.1);
+            border: 1px solid #4A90E2;
+            border-radius: 4px;
+            padding: 8px;
+            margin-top: 12px;
+        }
+        .agent-name {
+            font-size: 14px;
+            color: #4A90E2;
+            font-weight: bold;
+        }
+        .agent-status {
+            font-size: 11px;
+            color: #888;
+            margin-top: 4px;
+        }
+        #loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #4A90E2;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div id="loading">
+        <div class="loading-spinner"></div>
+        <div>初始化 Agent World...</div>
+    </div>
+    
+    <div id="canvas-container"></div>
+    
+    <div id="ui-overlay">
+        <h1>🤖 Agent World</h1>
+        <div class="status-item">
+            <span class="status-label">場景:</span>
+            <span class="status-value" id="scene-name">情報分析署</span>
+        </div>
+        <div class="status-item">
+            <span class="status-label">FPS:</span>
+            <span class="status-value" id="fps-counter">0</span>
+        </div>
+        <div class="status-item">
+            <span class="status-label">Agent 數量:</span>
+            <span class="status-value" id="agent-count">0</span>
+        </div>
+        
+        <div class="agent-card">
+            <div class="agent-name">HERMES-01</div>
+            <div class="agent-status" id="hermes-status">待命中...</div>
+        </div>
+    </div>
+
+    <script src="https://pixijs.download/v8.1.0/pixi.min.js"></script>
+    <script src="agent-world.js"></script>
+</body>
+</html>
