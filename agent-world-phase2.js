@@ -68,19 +68,23 @@ const AUDIO_CONFIG = {
     }
 };
 
-// 初始化 PixiJS 應用
-const app = new PIXI.Application({
-    width: CONFIG.width,
-    height: CONFIG.height,
-    backgroundColor: CONFIG.backgroundColor,
-    antialias: true,
-    resolution: window.devicePixelRatio || 1,
-    autoDensity: true
-});
+let app; // PixiJS app instance
 
-document.getElementById('canvas-container').appendChild(app.canvas);
+// Async PixiJS v8 初始化（必須在 async 函式內才能用 await）
+async function initPixi() {
+ app = new PIXI.Application();
+ await app.init({
+  width: CONFIG.width,
+  height: CONFIG.height,
+  backgroundColor: CONFIG.backgroundColor,
+  antialias: true,
+  resolution: window.devicePixelRatio || 1,
+  autoDensity: true,
+  preserveDrawingBuffer: true, // 必須！否則 canvas 全黑
+ });
+ document.getElementById('canvas-container').appendChild(app.canvas);
+}
 
-// 狀態追蹤
 const state = {
     agents: [],
     particles: [],
@@ -570,16 +574,19 @@ app.ticker.add((delta) => {
 // 初始化
 let sceneManager;
 
-function init() {
-    console.log('🤖 Agent World Phase 2 初始化...');
-    
-    createScene();
-    createAgents();
-    
-    // 初始化音效
-    if (AUDIO_CONFIG.enabled) {
-        initAudio();
-    }
+async function init() {
+ console.log('🤖 Agent World Phase 2 初始化...');
+
+// 先初始化 PixiJS v8
+ await initPixi();
+
+ createScene();
+ createAgents();
+
+ // 初始化音效
+ if (AUDIO_CONFIG.enabled) {
+  initAudio();
+ }
     
     // 連接 WebSocket
     if (CONFIG.websocket.enabled) {
